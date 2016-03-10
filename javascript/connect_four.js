@@ -39,17 +39,19 @@ function insert(col) {
         $(".row" + (y-1) + ".col" + col + " .circle").removeClass("player player" + current_player);
       }
       $(".row" + y + ".col" + col + " .circle" ).addClass("player player" + current_player);
+      row = y;
       if($(".row" + (y+1) + ".col" + col + " .circle").hasClass("player")) break;
     }
-    check_complete(col, y, current_player);
+    check_complete(col, row, current_player);
   } else {
     alert("Game is already complete! Refresh page to start a new game.");
   }
 }
 
 function check_complete(col, row, player) {
-  var left = check_left(col,row,player);
-  if(left) {
+  var x = horizontal(col,row,player);
+  var y = vertical(col,row,player);
+  if(x || y) {
     game_over = 1;
     alert("Congratulations Player " + current_player + "!");
   } else {
@@ -58,10 +60,39 @@ function check_complete(col, row, player) {
   }
 }
 
-function check_left(col, row, player) {
-  flag = true;
-  for(cnt = 3; cnt > 0; cnt--) {
-    to_check = $(".row" + row + ".col" + (col-cnt) + " .circle");
+function horizontal(col, row, player) {
+  for(base = col-3; base <= col; base++) {
+    if(base < 1) base = 1;
+    column_to_check = base;
+    if(check_horizontally(column_to_check, row, player)) return true;
+  }
+  return false;
+}
+
+function check_horizontally(col, row, player) {
+  flag = true ;
+  for(cnt = 0; cnt <= 3; cnt++) {
+    start_column = col+cnt;
+    to_check = $(".row" + row + ".col" + start_column + " .circle");
+    if(!to_check || !to_check.hasClass("player" + current_player)) flag = false;
+  }
+  return flag;
+}
+
+function vertical(col, row, player) {
+  for(base = row-3; base <= row; base++) {
+    if(base < 1) base = 1;
+    row_to_check = base;
+    if(check_vertically(col, row_to_check, player)) return true;
+  }
+  return false;
+}
+
+function check_vertically(col, row, player) {
+  flag = true ;
+  for(cnt = 0; cnt <= 3; cnt++) {
+    start_row = row+cnt;
+    to_check = $(".row" + start_row + ".col" + col + " .circle");
     if(!to_check || !to_check.hasClass("player" + current_player)) flag = false;
   }
   return flag;
