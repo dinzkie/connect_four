@@ -1,0 +1,35 @@
+.box {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  float: left;
+}
+.header:hover {
+  border: 1px solid red;
+  cursor: pointer;
+}
+.header {
+  width: 100px;
+  height: 30px;
+  border: 1px solid black;
+  float: left;
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.player1 {
+  background-color: red;
+}
+
+.player2 {
+  background-color: blue;
+}
+
+.circle {
+  border-radius: 50px;
+  width: 90px;
+  height: 90px;
+  border: 2px solid;
+  margin: 4px;
+}
