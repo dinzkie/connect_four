@@ -51,7 +51,9 @@ function insert(col) {
 function check_complete(col, row, player) {
   var x = horizontal(col,row,player);
   var y = vertical(col,row,player);
-  if(x || y) {
+  var d = angle_45(col,row,player);
+  var d2 = angle_135(col,row,player);
+  if(x || y || d || d2) {
     game_over = 1;
     alert("Congratulations Player " + current_player + "!");
   } else {
@@ -93,6 +95,46 @@ function check_vertically(col, row, player) {
   for(cnt = 0; cnt <= 3; cnt++) {
     start_row = row+cnt;
     to_check = $(".row" + start_row + ".col" + col + " .circle");
+    if(!to_check || !to_check.hasClass("player" + current_player)) flag = false;
+  }
+  return flag;
+}
+
+function angle_45(col, row, player) {
+  for(base = 3; base >= 0; base--) {
+    column_to_check = col-base;
+    row_to_check = row-base;
+    if(check_angle_45(column_to_check, row_to_check, player)) return true;
+  }
+  return false;
+}
+
+function check_angle_45(col, row, player) {
+  flag = true ;
+  for(cnt = 0; cnt <= 3; cnt++) {
+    start_row = row+cnt;
+    start_column = col+cnt;
+    to_check = $(".row" + start_row + ".col" + start_column + " .circle");
+    if(!to_check || !to_check.hasClass("player" + current_player)) flag = false;
+  }
+  return flag;
+}
+
+function angle_135(col, row, player) {
+  for(base = 3; base >= 0; base--) {
+    column_to_check = col-base;
+    row_to_check = row+base;
+    if(check_angle_135(column_to_check, row_to_check, player)) return true;
+  }
+  return false;
+}
+
+function check_angle_135(col, row, player) {
+  flag = true ;
+  for(cnt = 0; cnt <= 3; cnt++) {
+    start_row = row-cnt;
+    start_column = col+cnt;
+    to_check = $(".row" + start_row + ".col" + start_column + " .circle");
     if(!to_check || !to_check.hasClass("player" + current_player)) flag = false;
   }
   return flag;
