@@ -1,3 +1,6 @@
+body {
+  font-family: "Courier New", Courier, monospace;
+}
 .box {
   width: 100px;
   height: 100px;
@@ -5,7 +8,7 @@
   float: left;
 }
 .header:hover {
-  border: 1px solid red;
+  border: 1px solid yellow;
   cursor: pointer;
 }
 .header {
@@ -16,6 +19,8 @@
   text-align: center;
   font-weight: bold;
   font-size: 25px;
+  background-color: black;
+  color: white;
 }
 
 .player1 {

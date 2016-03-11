@@ -44,15 +44,24 @@ function initialize_tables() {
 
 function insert(col) {
   if(!game_over) {
+    column_filled = false;
     for(y = 1; y <= max_rows; y++) {
+      if($(".row" + y + ".col" + col + " .circle").hasClass("player")) {
+        if(y == 1) {
+          alert("This column is already filled. There should be other columns to fill.")
+          column_filled = true;
+        }
+        break;
+      }
       if(y != 1) {
         $(".row" + (y-1) + ".col" + col + " .circle").removeClass("player player" + current_player);
       }
       $(".row" + y + ".col" + col + " .circle" ).addClass("player player" + current_player);
       row = y;
-      if($(".row" + (y+1) + ".col" + col + " .circle").hasClass("player")) break;
+      //if($(".row" + (y+1) + ".col" + col + " .circle").hasClass("player")) break;
     }
-    check_complete(col, row, current_player);
+    if(!column_filled)
+      check_complete(col, row, current_player);
   } else {
     if(confirm("Game has already ended! Refresh page to start a new game.")) {
       init();
