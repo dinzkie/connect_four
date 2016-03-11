@@ -33,3 +33,11 @@
   border: 2px solid;
   margin: 4px;
 }
+
+.active_player {
+  width: 100px;
+  border: 1px solid black;
+  text-align: center;
+  font-weight: bold;
+  height: 25px;
+}

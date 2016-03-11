@@ -4,6 +4,17 @@ var current_player = 1;
 var game_over = 0;
 
 $(document).ready(function() {
+  init();
+});
+
+function init() {
+  game_over = 0;
+  $(".active_player").removeClass("player" + current_player);
+  current_player = 1;
+  $(".active_player").addClass("player" + current_player);
+  $("#connect-four-container").empty();
+  $(".active_player").text(current_player);
+
   initialize_headers();
   initialize_tables();
 
@@ -11,7 +22,7 @@ $(document).ready(function() {
     col = $(this).text();
     insert(col);
   });
-});
+}
 
 function initialize_headers() {
   for(x = 1; x <= max_columns; x++) {
@@ -25,7 +36,6 @@ function initialize_tables() {
     for(x = 1; x <= max_columns; x++) {
         $("#connect-four-container").append("<div class=\"box col" + x + " row" + y + "\"></div>");
         $(".col" + x + ".row" + y).append("<input class=\"row\" type=\"hidden\" value=\"" + y + "\">");
-        $(".col" + x + ".row" + y).append("<input class=\"player\" type=\"hidden\" value=\"" + 0 + "\">");
         $(".col" + x + ".row" + y).append("<div class=\"circle\"></div>");
     }
     $("#connect-four-container").append("<div style=\"clear:both;\"></div>");
@@ -44,7 +54,9 @@ function insert(col) {
     }
     check_complete(col, row, current_player);
   } else {
-    alert("Game is already complete! Refresh page to start a new game.");
+    if(confirm("Game has already ended! Refresh page to start a new game.")) {
+      init();
+    }
   }
 }
 
@@ -55,11 +67,30 @@ function check_complete(col, row, player) {
   var d2 = angle_135(col,row,player);
   if(x || y || d || d2) {
     game_over = 1;
-    alert("Congratulations Player " + current_player + "!");
+    if(confirm("Congratulations Player " + current_player + "! Restart game?")) {
+      init();
+    }
   } else {
-    current_player = (current_player == 1) ? 2 : 1;
-    $(".active_player").text(current_player);
+    if(all_fields_filled()) {
+      if(confirm("Game has ended in a draw! Restart game?")) {
+        init();
+      }
+    } else {
+      $(".active_player").removeClass("player" + current_player);
+      current_player = (current_player == 1) ? 2 : 1;
+      $(".active_player").text(current_player);
+      $(".active_player").addClass("player" + current_player);
+    }
   }
+}
+
+function all_fields_filled() {
+  flag = true;
+  for(x = 1; x <= max_columns; x++) {
+    to_check = $(".row1.col" + x + " .circle").hasClass("player");
+    if(!to_check) flag = false;
+  }
+  return flag;
 }
 
 function horizontal(col, row, player) {
